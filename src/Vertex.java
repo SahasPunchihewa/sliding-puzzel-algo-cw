@@ -1,36 +1,40 @@
+import java.util.Objects;
+
 public class Vertex {
-    private int label;
 
-    public Vertex(int label) {
-        this.label = label;
+    private Integer id;
+
+    public Vertex(Integer id) {
+        this.id = id;
     }
 
-    public int getLabel() {
-        return label;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLabel(int label) {
-        this.label = label;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(this == obj)
-            return true;
-        if(obj == null || obj.getClass()!= this.getClass())
-            return false;
-        Vertex vertex = (Vertex) obj;
-        return (vertex.label ==(this.label));
-    }
-
-    @Override
-    public int hashCode() {
-        return this.label;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "Vertex [label=" + label + "]";
+        return "Vertex{" +
+                "id=" + id +
+                '}';
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null || object.getClass() != this.getClass())
+            return false;
+        Vertex vertex = (Vertex) object;
+        return (Objects.equals(vertex.id, this.id));
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
 }
