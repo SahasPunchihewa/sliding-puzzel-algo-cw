@@ -36,7 +36,7 @@ public class PathFinder {
 
     private void readFile() throws Exception {
 
-        Path path = Paths.get("/Users/sahaspunchihewa/Desktop/IIT/YR 2/Algo/examples/maze30_1.txt");
+        Path path = Paths.get("D:\\IIT\\YR 2\\Algo\\examples\\maze30_5.txt");
         File txt = new File(String.valueOf(path));
         Scanner scanner = new Scanner(txt);
         nodeMatrix = new ArrayList<>();
@@ -210,7 +210,7 @@ public class PathFinder {
         }
         Integer startId;
         Integer endId;
-        if (Objects.equals(node.getX(), end.getId())) {
+        if (Objects.equals(node.getX(), end.getX())) {
             if (node.getY() < end.getY()) {
                 startId = node.getY();
                 endId = end.getY();
@@ -264,9 +264,9 @@ public class PathFinder {
 
                     if (Objects.equals(currentNode.getX(), nextNode.getX())) {
                         if (currentNode.getY() > nextNode.getY()) {
-                            direction = "Up";
+                            direction = "up";
                         } else {
-                            direction = "Down";
+                            direction = "down";
                         }
                     } else {
                         if (currentNode.getX() > nextNode.getX()) {
@@ -275,7 +275,7 @@ public class PathFinder {
                             direction = "right";
                         }
                     }
-                    System.out.println(currentIndex + ". Move " + direction + " to (" + nextNode.getX() + "," + nextNode.getY() + ")");
+                    System.out.println(currentIndex + 1 + ". Move " + direction + " to (" + nextNode.getX() + "," + nextNode.getY() + ")");
                 } else {
                     System.out.println(currentIndex + 1 + ". Done!");
                 }
