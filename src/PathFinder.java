@@ -37,7 +37,12 @@ public class PathFinder {
         printShortestPath(shortestPath);
 
         stopWatch.stop();
-        System.err.println("Elapsed time: " + (initializingTime + stopWatch.getElapsedTime()) / 1000.0 + " seconds");
+
+        long totalTime = initializingTime + stopWatch.getElapsedTime();
+        long minutes = (totalTime / 1000) / 60;
+        long seconds = (totalTime / 1000) % 60;
+
+        System.err.println("Elapsed time: " + totalTime + " milliseconds (" + minutes + " minutes and " + seconds + " seconds)");
     }
 
     private void readFile() throws Exception {
