@@ -3,19 +3,22 @@ import java.util.*;
 
 public class PathFinder {
 
-    private final Map<Integer, Node> map = new HashMap<>();
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
+    private final static Character ROCK = '0';
     private Node start;
     private Node end;
     private List<List<Node>> nodeMatrix;
     private Integer height;
     private Integer width;
-    private final StopWatch stopWatch = new StopWatch();
-    private final static Character ROCK = '0';
+    private long initializingTime;
+    private StopWatch localStopWatch;
 
     public PathFinder() {
     }
 
-    public void findPath() {
+    public void findPath(StopWatch stopWatch) {
+
+        localStopWatch = stopWatch;
 
         try {
             readFile();
@@ -34,15 +37,18 @@ public class PathFinder {
         printShortestPath(shortestPath);
 
         stopWatch.stop();
-        System.err.println("elapsed time: " + stopWatch.getElapsedTime()/1000.0 + " seconds");
+        System.err.println("Elapsed time: " + (initializingTime + stopWatch.getElapsedTime()) / 1000.0 + " seconds");
     }
 
     private void readFile() throws Exception {
 
+        localStopWatch.stop();
+        initializingTime = localStopWatch.getElapsedTime();
+
         FileUtil fileUtil = new FileUtil();
         File txtFile = fileUtil.getFile();
 
-        stopWatch.start();
+        localStopWatch.start();
 
         Scanner scanner = new Scanner(txtFile);
         nodeMatrix = new ArrayList<>();
@@ -66,7 +72,7 @@ public class PathFinder {
                     end = node;
                 }
                 lineList.add(node);
-                map.put(node.getId(), node);
+                nodeMap.put(node.getId(), node);
 
                 id++;
             }
@@ -92,7 +98,7 @@ public class PathFinder {
             Integer vertexId = stack.pop();
             visited.add(vertexId);
 
-            currentPosition = map.get(vertexId);
+            currentPosition = nodeMap.get(vertexId);
 
             if (findEndOfPath(currentPosition)) {
                 graph.addVertex(end.getId());
@@ -258,14 +264,14 @@ public class PathFinder {
             for (Integer vertexId : shortestPathList) {
 
                 int currentIndex = shortestPathList.indexOf(vertexId);
-                Node currentNode = map.get(vertexId);
+                Node currentNode = nodeMap.get(vertexId);
 
                 if (currentNode == start) {
                     System.out.println(currentIndex + 1 + ". Start at (" + currentNode.getX() + "," + currentNode.getY() + ")");
                 }
 
                 if (!currentNode.equals(end)) {
-                    Node nextNode = map.get(shortestPathList.get(currentIndex + 1));
+                    Node nextNode = nodeMap.get(shortestPathList.get(currentIndex + 1));
                     String direction;
 
                     if (Objects.equals(currentNode.getX(), nextNode.getX())) {

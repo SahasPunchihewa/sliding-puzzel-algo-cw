@@ -1,4 +1,5 @@
 public class StopWatch {
+
     private long startTime = -1;
     private long stopTime = -1;
     private boolean running = false;
