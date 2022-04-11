@@ -36,7 +36,7 @@ public class PathFinder {
 
     private void readFile() throws Exception {
 
-        Path path = Paths.get("D:\\IIT\\YR 2\\Algo\\examples\\maze30_5.txt");
+        Path path = Paths.get("D:\\IIT\\YR 2\\Algo\\test.txt");
         File txt = new File(String.valueOf(path));
         Scanner scanner = new Scanner(txt);
         nodeMatrix = new ArrayList<>();
@@ -255,7 +255,7 @@ public class PathFinder {
                 Node currentNode = map.get(vertexId);
 
                 if (currentNode == start) {
-                    System.out.println(currentIndex + ". Start at (" + currentNode.getX() + "," + currentNode.getY() + ")");
+                    System.out.println(currentIndex + 1 + ". Start at (" + currentNode.getX() + "," + currentNode.getY() + ")");
                 }
 
                 if (!currentNode.equals(end)) {
@@ -275,9 +275,9 @@ public class PathFinder {
                             direction = "right";
                         }
                     }
-                    System.out.println(currentIndex + 1 + ". Move " + direction + " to (" + nextNode.getX() + "," + nextNode.getY() + ")");
+                    System.out.println(currentIndex + 2 + ". Move " + direction + " to (" + nextNode.getX() + "," + nextNode.getY() + ")");
                 } else {
-                    System.out.println(currentIndex + 1 + ". Done!");
+                    System.out.println(currentIndex + 2 + ". Done!");
                 }
             }
         }
