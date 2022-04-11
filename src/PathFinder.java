@@ -1,6 +1,4 @@
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class PathFinder {
@@ -11,6 +9,8 @@ public class PathFinder {
     private List<List<Node>> nodeMatrix;
     private Integer height;
     private Integer width;
+    private final StopWatch stopWatch = new StopWatch();
+    private final static Character ROCK = '0';
 
     public PathFinder() {
     }
@@ -32,13 +32,19 @@ public class PathFinder {
         List<Integer> shortestPath = graph.BreadthFirstSearch(start.getId(), end.getId());
 
         printShortestPath(shortestPath);
+
+        stopWatch.stop();
+        System.err.println("elapsed time: " + stopWatch.getElapsedTime()/1000.0 + " seconds");
     }
 
     private void readFile() throws Exception {
 
-        Path path = Paths.get("D:\\IIT\\YR 2\\Algo\\test.txt");
-        File txt = new File(String.valueOf(path));
-        Scanner scanner = new Scanner(txt);
+        FileUtil fileUtil = new FileUtil();
+        File txtFile = fileUtil.getFile();
+
+        stopWatch.start();
+
+        Scanner scanner = new Scanner(txtFile);
         nodeMatrix = new ArrayList<>();
         int lineNo = 0;
         int id = 0;
@@ -169,7 +175,7 @@ public class PathFinder {
             return false;
         } else {
             Node upNode = nodeMatrix.get(node.getY() - 1).get(node.getX());
-            return !upNode.getLetter().equals('0');
+            return !upNode.getLetter().equals(ROCK);
         }
     }
 
@@ -178,7 +184,7 @@ public class PathFinder {
             return false;
         } else {
             Node downNode = nodeMatrix.get(node.getY() + 1).get(node.getX());
-            return !downNode.getLetter().equals('0');
+            return !downNode.getLetter().equals(ROCK);
         }
     }
 
@@ -187,7 +193,7 @@ public class PathFinder {
             return false;
         } else {
             Node leftNode = nodeMatrix.get(node.getY()).get(node.getX() - 1);
-            return !leftNode.getLetter().equals('0');
+            return !leftNode.getLetter().equals(ROCK);
         }
     }
 
@@ -196,7 +202,7 @@ public class PathFinder {
             return false;
         } else {
             Node rightNode = nodeMatrix.get(node.getY()).get(node.getX() + 1);
-            return !rightNode.getLetter().equals('0');
+            return !rightNode.getLetter().equals(ROCK);
         }
     }
 
@@ -221,7 +227,7 @@ public class PathFinder {
             List<Node> col = nodeMatrix.get(end.getX());
             for (int i = startId; i <= endId; i++) {
                 Node verticalNode = col.get(i);
-                if (verticalNode.getLetter().equals('0')) {
+                if (verticalNode.getLetter().equals(ROCK)) {
                     return false;
                 }
             }
@@ -236,7 +242,7 @@ public class PathFinder {
             List<Node> row = nodeMatrix.get(end.getY());
             for (int i = startId; i <= endId; i++) {
                 Node horizontalNode = row.get(i);
-                if (horizontalNode.getLetter().equals('0')) {
+                if (horizontalNode.getLetter().equals(ROCK)) {
                     return false;
                 }
             }
