@@ -32,6 +32,11 @@ public class PathFinder {
 
         Graph graph = createGraph();
 
+        if (graph == null) {
+            System.out.println("No path available!");
+            return;
+        }
+
         List<Integer> shortestPath = graph.BreadthFirstSearch(start.getId(), end.getId());
 
         printShortestPath(shortestPath);
