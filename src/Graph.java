@@ -16,6 +16,7 @@ public class Graph {
 
     public void removeVertex(Integer id) {
         Vertex Vertex = new Vertex(id);
+
         adjVertices.values().forEach(e -> e.remove(Vertex));
         adjVertices.remove(new Vertex(id));
     }
@@ -33,6 +34,7 @@ public class Graph {
         Vertex v2 = new Vertex(id2);
         List<Vertex> eV1 = adjVertices.get(v1);
         List<Vertex> eV2 = adjVertices.get(v2);
+
         if (eV1 != null)
             eV1.remove(v2);
         if (eV2 != null)
@@ -44,7 +46,6 @@ public class Graph {
         try {
             Queue<Integer> queue = new LinkedList<>();
             List<Integer> visited = new ArrayList<>();
-
             Map<Integer, Integer> vertexMap = new HashMap<>();
 
             queue.add(start);
@@ -64,12 +65,12 @@ public class Graph {
 
             List<Integer> shortestPath = new ArrayList<>();
             Integer tempEnd = end;
+
             while (tempEnd != null) {
                 shortestPath.add(tempEnd);
                 tempEnd = vertexMap.get(tempEnd);
             }
             Collections.reverse(shortestPath);
-
             return shortestPath;
         } catch (Exception ex) {
             System.out.println("An Error occurred while Breadth First Search: " + ex.getMessage());

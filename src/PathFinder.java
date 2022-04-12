@@ -18,6 +18,7 @@ public class PathFinder {
     private Integer width;
     private long initializingTime;
     private StopWatch localStopWatch;
+    private Graph graph = new Graph();
 
     public PathFinder() {
     }
@@ -36,7 +37,7 @@ public class PathFinder {
         height = nodeMatrix.size();
         width = nodeMatrix.get(0).size();
 
-        Graph graph = createGraph();
+        createGraph();
 
         if (graph == null) {
             System.out.println("No path available!");
@@ -99,16 +100,15 @@ public class PathFinder {
     }
 
 
-    private Graph createGraph() {
+    private void createGraph() {
 
-        Graph graph = new Graph();
         Stack<Integer> stack = new Stack<>();
         List<Integer> visited = new ArrayList<>();
-
         Node currentPosition = start;
+        boolean pathPresent = false;
+
         stack.push(currentPosition.getId());
         graph.addVertex(currentPosition.getId());
-        boolean pathPresent = false;
 
         while (!stack.isEmpty()) {
             Integer vertexId = stack.pop();
@@ -119,48 +119,38 @@ public class PathFinder {
             if (findEndOfPath(currentPosition)) {
                 graph.addVertex(end.getId());
                 graph.addEdge(vertexId, end.getId());
-                pathPresent = true;
                 stack.clear();
+                pathPresent = true;
                 break;
             } else {
                 if (canGoUp(currentPosition)) {
                     Node newNode = goUp(currentPosition);
-                    if (!visited.contains(newNode.getId())) {
-                        stack.push(newNode.getId());
-                        graph.addVertex(newNode.getId());
-                        graph.addEdge(vertexId, newNode.getId());
-                    }
+                    checkVisitedAndUpdateGraph(visited, newNode, stack, vertexId);
                 }
                 if (canGoDown(currentPosition)) {
                     Node newNode = goDown(currentPosition);
-                    if (!visited.contains(newNode.getId())) {
-                        stack.push(newNode.getId());
-                        graph.addVertex(newNode.getId());
-                        graph.addEdge(vertexId, newNode.getId());
-                    }
+                    checkVisitedAndUpdateGraph(visited, newNode, stack, vertexId);
                 }
                 if (canGoLeft(currentPosition)) {
                     Node newNode = goLeft(currentPosition);
-                    if (!visited.contains(newNode.getId())) {
-                        stack.push(newNode.getId());
-                        graph.addVertex(newNode.getId());
-                        graph.addEdge(vertexId, newNode.getId());
-                    }
+                    checkVisitedAndUpdateGraph(visited, newNode, stack, vertexId);
                 }
                 if (canGoRight(currentPosition)) {
                     Node newNode = goRight(currentPosition);
-                    if (!visited.contains(newNode.getId())) {
-                        stack.push(newNode.getId());
-                        graph.addVertex(newNode.getId());
-                        graph.addEdge(vertexId, newNode.getId());
-                    }
+                    checkVisitedAndUpdateGraph(visited, newNode, stack, vertexId);
                 }
             }
         }
-        if (pathPresent) {
-            return graph;
-        } else {
-            return null;
+        if (!pathPresent) {
+            graph = null;
+        }
+    }
+
+    private void checkVisitedAndUpdateGraph(List<Integer> visited, Node newNode, Stack<Integer> stack, Integer vertexId) {
+        if (!visited.contains(newNode.getId())) {
+            stack.push(newNode.getId());
+            graph.addVertex(newNode.getId());
+            graph.addEdge(vertexId, newNode.getId());
         }
     }
 
