@@ -16,16 +16,12 @@ public class PathFinder {
     private List<List<Node>> nodeMatrix;
     private Integer height;
     private Integer width;
-    private long initializingTime;
-    private StopWatch localStopWatch;
     private Graph graph = new Graph();
 
     public PathFinder() {
     }
 
-    public void findPath(StopWatch stopWatch) {
-
-        localStopWatch = stopWatch;
+    public void findPath() {
 
         try {
             readFile();
@@ -44,13 +40,17 @@ public class PathFinder {
             return;
         }
 
-        List<Integer> shortestPath = graph.BreadthFirstSearch(start.getId(), end.getId());
+        StopWatch stopWatch = new StopWatch();
 
-        printShortestPath(shortestPath);
+        stopWatch.start();
+
+        List<Integer> shortestPath = graph.BreadthFirstSearch(start.getId(), end.getId());
 
         stopWatch.stop();
 
-        long totalTime = initializingTime + stopWatch.getElapsedTime();
+        printShortestPath(shortestPath);
+
+        long totalTime = stopWatch.getElapsedTime();
         long minutes = (totalTime / 1000) / 60;
         long seconds = (totalTime / 1000) % 60;
 
@@ -59,14 +59,8 @@ public class PathFinder {
 
     private void readFile() throws Exception {
 
-        localStopWatch.stop();
-        initializingTime = localStopWatch.getElapsedTime();
-
         FileUtil fileUtil = new FileUtil();
         File txtFile = fileUtil.getFile();
-
-        localStopWatch.start();
-
         Scanner scanner = new Scanner(txtFile);
         nodeMatrix = new ArrayList<>();
         int lineNo = 0;
@@ -273,7 +267,7 @@ public class PathFinder {
                 Node currentNode = nodeMap.get(vertexId);
 
                 if (currentNode == start) {
-                    System.out.println(currentIndex + 1 + ". Start at (" + currentNode.getX() + "," + currentNode.getY() + ")");
+                    System.out.println(currentIndex + 1 + ". Start at (" + (currentNode.getX() + 1) + "," + (currentNode.getY() + 1) + ")");
                 }
 
                 if (!currentNode.equals(end)) {
@@ -293,7 +287,7 @@ public class PathFinder {
                             direction = "right";
                         }
                     }
-                    System.out.println(currentIndex + 2 + ". Move " + direction + " to (" + nextNode.getX() + "," + nextNode.getY() + ")");
+                    System.out.println(currentIndex + 2 + ". Move " + direction + " to (" + (nextNode.getX() + 1) + "," + (nextNode.getY() + 1) + ")");
                 } else {
                     System.out.println(currentIndex + 2 + ". Done!");
                 }
